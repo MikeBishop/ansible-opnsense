@@ -51,11 +51,14 @@ class Gw(BaseModule):
         'select': ['interface', 'ip_protocol'],
     }
     # Dynamic/virtual gateways (e.g. one generated from a DHCP-assigned
-    # interface) have no configurable monitor thresholds, so OPNsense's API
-    # omits latencylow/latencyhigh/losslow/losshigh entirely for them rather
-    # than returning a default - translation must tolerate that absence the
+    # interface) have no configurable monitor thresholds at all - OPNsense's
+    # API omits every monitor-tuning field entirely for them rather than
+    # returning a default, so translation must tolerate their absence the
     # same way it already does for far_gw.
-    FIELDS_OPTIONAL = ['far_gw', 'latency_low', 'latency_high', 'loss_low', 'loss_high']
+    FIELDS_OPTIONAL = [
+        'far_gw', 'force_down', 'latency_low', 'latency_high', 'loss_low', 'loss_high',
+        'interval', 'time_period', 'loss_interval', 'data_length',
+    ]
     INT_VALIDATIONS = {
         'priority': {'min': 0, 'max': 255},
         'weight': {'min': 1, 'max': 5},
