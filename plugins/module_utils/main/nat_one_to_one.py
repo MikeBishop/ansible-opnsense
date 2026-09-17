@@ -43,7 +43,10 @@ class OneToOne(BaseModule):
     # See rule.py's FIELDS_OPTIONAL comment: OPNsense omits source_not/
     # destination_not entirely on some of its own automatically-generated
     # rules, and this module always lists+translates every existing rule.
-    FIELDS_OPTIONAL = ['source_invert', 'destination_invert']
+    # log added defensively - nat_source hit the identical bool-typing gap
+    # live (log isn't translate-mapped, so it fails later in typing, not
+    # field-name translation) and this module maps the field the same way.
+    FIELDS_OPTIONAL = ['source_invert', 'destination_invert', 'log']
     EXIST_ATTR = 'rule'
     API_CMD_REL = 'apply'
 

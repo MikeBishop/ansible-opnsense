@@ -45,10 +45,13 @@ class SNat(BaseModule):
         'sequence': {'min': 1, 'max': 99999},
     }
     # See rule.py's FIELDS_OPTIONAL comment: OPNsense omits source_not/
-    # destination_not/nonat entirely on some of its own automatically-
+    # destination_not/nonat/log entirely on some of its own automatically-
     # generated rules (confirmed live: the auto ISAKMP NAT rule lacks all
-    # three), and nat_source always lists+translates every existing rule.
-    FIELDS_OPTIONAL = ['source_invert', 'destination_invert', 'no_nat']
+    # four - source_invert/destination_invert/no_nat fail in field-name
+    # translation, log fails later in bool-typing since it isn't
+    # translate-mapped), and nat_source always lists+translates every
+    # existing rule.
+    FIELDS_OPTIONAL = ['source_invert', 'destination_invert', 'no_nat', 'log']
     EXIST_ATTR = 'rule'
     API_CMD_REL = 'apply'
 
