@@ -48,6 +48,10 @@ class Rule(BaseModule):
         'sequence': {'min': 1, 'max': 1000000},
         'max_packet_length': {'min': 2, 'max': 65535},
     }
+    # See rule.py's FIELDS_OPTIONAL comment: OPNsense omits source_not/
+    # destination_not entirely on some of its own automatically-generated
+    # rules, and this module always lists+translates every existing rule.
+    FIELDS_OPTIONAL = ['source_invert', 'destination_invert']
     EXIST_ATTR = 'rule'
     TIMEOUT = 20.0  # 'get' timeout
     SEARCH_ADDITIONAL = {

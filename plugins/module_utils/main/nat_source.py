@@ -44,6 +44,10 @@ class SNat(BaseModule):
     INT_VALIDATIONS = {
         'sequence': {'min': 1, 'max': 99999},
     }
+    # See rule.py's FIELDS_OPTIONAL comment: OPNsense omits source_not/
+    # destination_not entirely on some of its own automatically-generated
+    # rules, and nat_source always lists+translates every existing rule.
+    FIELDS_OPTIONAL = ['source_invert', 'destination_invert']
     EXIST_ATTR = 'rule'
     API_CMD_REL = 'apply'
 
