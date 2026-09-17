@@ -75,7 +75,13 @@ class Rule(BaseModule):
         'list': ['interface', 'tcp_flags', 'tcp_flags_clear', 'icmp_type', 'icmpv6_type'],
         'int': ['sequence', 'state_timeout'],
     }
-    FIELDS_OPTIONAL = ['icmp_type', 'icmpv6_type']
+    # OPNsense omits source_not/destination_not entirely on some of its own
+    # automatically-generated rules (e.g. the "Auto created rule for ISAKMP"
+    # pass rule OPNsense adds per WAN-type interface) - rule_multi always has
+    # to list and translate these (they're deliberately never purged, see
+    # homelab-compose's opnsense-firewall-state.yml), so a hard KeyError here
+    # takes down every rule in the same apply, not just the automatic one.
+    FIELDS_OPTIONAL = ['icmp_type', 'icmpv6_type', 'source_invert', 'destination_invert']
     EXIST_ATTR = 'rule'
     TIMEOUT = 60.0  # urltable etc reload
     INT_VALIDATIONS = {
